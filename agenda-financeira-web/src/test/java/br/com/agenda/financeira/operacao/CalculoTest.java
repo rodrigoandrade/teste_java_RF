@@ -12,18 +12,18 @@ import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 import static org.assertj.core.api.Assertions.*;
 
+import br.com.agenda.financeira.calculo.ICalculoStrategy;
 import br.com.agenda.financeira.modelo.Conta;
 import br.com.agenda.financeira.modelo.Transacao;
-import br.com.agenda.financeira.operacao.IOperacaoStrategy;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OperacaoTest {
+public class CalculoTest {
 	
 	public Conta origem;
 	public Conta destino;
 	
 	@Mock
-	IOperacaoStrategy<Transacao> operation;
+	ICalculoStrategy<Transacao> strategy;
 	
 	@Before
 	public void inicializa() {
@@ -32,56 +32,56 @@ public class OperacaoTest {
 	}
 	
 	@Test
-	public void testOperacaoTipoA() {
+	public void testCalculoTipoA() {
 		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now(), origem, destino);
-		when(operation.calcular(transacao)).thenReturn(33.0d);
+		when(strategy.calcular(transacao)).thenReturn(33.0d);
 		
-		double taxa = operation.calcular(transacao);
+		double taxa = strategy.calcular(transacao);
 		assertThat(taxa).isEqualTo(33.0d);
 	}
 	
 	@Test
-	public void testOperacaoTipoB() {
+	public void testCalculoTipoB() {
 		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(4), origem, destino);
-		when(operation.calcular(transacao)).thenReturn(12.0d);
+		when(strategy.calcular(transacao)).thenReturn(12.0d);
 		
-		double taxa = operation.calcular(transacao);
+		double taxa = strategy.calcular(transacao);
 		assertThat(taxa).isEqualTo(12.0d);
 	}
 	
 	@Test
-	public void testOperacaoTipoCAcimaDeDezDiasDaDataDeAgendamento() {
+	public void testCalculoTipoCAcimaDeDezDiasDaDataDeAgendamento() {
 		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(12), origem, destino);
-		when(operation.calcular(transacao)).thenReturn(82.0d);
+		when(strategy.calcular(transacao)).thenReturn(82.0d);
 		
-		double taxa = operation.calcular(transacao);
+		double taxa = strategy.calcular(transacao);
 		assertThat(taxa).isEqualTo(82.0d);
 	}
 	
 	@Test
-	public void testOperacaoTipoCAcimaDeVinteDiasDaDataDeAgendamento() {
+	public void testCalculoTipoCAcimaDeVinteDiasDaDataDeAgendamento() {
 		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(28), origem, destino);
-		when(operation.calcular(transacao)).thenReturn(69.0d);
+		when(strategy.calcular(transacao)).thenReturn(69.0d);
 		
-		double taxa = operation.calcular(transacao);
+		double taxa = strategy.calcular(transacao);
 		assertThat(taxa).isEqualTo(69.0d);
 	}
 	
 	@Test
-	public void testOperacaoTipoCAcimaDeTrintaDiasDaDataDeAgendamento() {
+	public void testCalculoTipoCAcimaDeTrintaDiasDaDataDeAgendamento() {
 		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(33), origem, destino);
-		when(operation.calcular(transacao)).thenReturn(47.0d);
+		when(strategy.calcular(transacao)).thenReturn(47.0d);
 		
-		double taxa = operation.calcular(transacao);
+		double taxa = strategy.calcular(transacao);
 		assertThat(taxa).isEqualTo(47.0d);
 	}
 	
 	@Test
-	public void testOperacaoTipoCAcimaDeQuarentaDiasDaDataDeAgendamento() {
+	public void testCalculoTipoCAcimaDeQuarentaDiasDaDataDeAgendamento() {
 		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(60), origem, destino);
-		when(operation.calcular(transacao)).thenReturn(17.0d);
+		when(strategy.calcular(transacao)).thenReturn(17.0d);
 		
-		double taxa = operation.calcular(transacao);
+		double taxa = strategy.calcular(transacao);
 		assertThat(taxa).isEqualTo(17.0d);
 	}
 	

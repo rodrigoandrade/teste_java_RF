@@ -1,12 +1,12 @@
-package br.com.agenda.financeira.operacao;
+package br.com.agenda.financeira.calculo;
 
 import br.com.agenda.financeira.modelo.Transacao;
 
-public class Operacao {
+public class Calculo {
 
-	private IOperacaoStrategy<Transacao> operacao;
+	private ICalculoStrategy<Transacao> operacao;
 	
-	public Operacao(IOperacaoStrategy<Transacao> operacao) {
+	public Calculo(ICalculoStrategy<Transacao> operacao) {
 		this.operacao = operacao;
 	}
 	
