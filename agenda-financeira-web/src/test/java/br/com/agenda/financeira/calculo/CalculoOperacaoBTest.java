@@ -1,19 +1,18 @@
 package br.com.agenda.financeira.calculo;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
+import br.com.agenda.financeira.enums.OperacaoEnum;
 import br.com.agenda.financeira.modelo.Conta;
 import br.com.agenda.financeira.modelo.Transacao;
 
-@RunWith(MockitoJUnitRunner.class)
 public class CalculoOperacaoBTest {
 	
 	public Conta origem;
@@ -27,10 +26,23 @@ public class CalculoOperacaoBTest {
 	
 	@Test
 	public void testCalculoOperacao() {
-		ICalculoStrategy<Transacao> strategy = new CalculoOperacaoB();
 		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(8), origem, destino);
-		Double taxa = strategy.calcular(transacao);
+		
+		OperacaoEnum operacao = OperacaoEnum.B;
+		Double taxa = operacao.calcular(transacao);
+		
 		assertThat(taxa).isEqualTo(12.0d);
 	}
 
+	@Test
+	public void testCalculoOperacaoNaoSuportada() {
+		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(20), origem, destino);
+		
+		OperacaoEnum operacao = OperacaoEnum.B;
+		
+		assertThatThrownBy(() -> operacao.calcular(transacao))
+			.isInstanceOf(RuntimeException.class)
+			.hasMessage("Transacao nao suportada!");
+	}
+	
 }

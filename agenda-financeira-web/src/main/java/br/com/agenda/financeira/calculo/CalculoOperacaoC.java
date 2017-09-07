@@ -33,7 +33,7 @@ public class CalculoOperacaoC implements ICalculoStrategy<Transacao> {
 		
 		} 
 		
-		throw new RuntimeException("Nao achou operacao de calculo para essa transacao!");
+		throw new RuntimeException("Transacao nao suportada!");
 	}
 	
 	private boolean isAgendamentoEntreDezHeVinteDias(Transacao transacao) {

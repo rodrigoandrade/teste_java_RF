@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.com.agenda.financeira.enums.OperacaoEnum;
 import br.com.agenda.financeira.modelo.Conta;
 import br.com.agenda.financeira.modelo.Transacao;
 
@@ -25,44 +26,86 @@ public class CalculoOperacaoCTest {
 	
 	@Test
 	public void testCalculoOperacaoEntreDezHeVinteDias() {
-		ICalculoStrategy<Transacao> strategy = new CalculoOperacaoC();
 		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(15), origem, destino);
-		Double taxa = strategy.calcular(transacao);
+		
+		OperacaoEnum operacao = OperacaoEnum.C;
+		Double taxa = operacao.calcular(transacao);
+		
 		assertThat(taxa).isEqualTo(82.0d);
 	}
 	
 	@Test
+	public void testCalculoOperacaoEntreDezHeVinteDiasComOperacaoNaoSuportada() {
+		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(1), origem, destino);
+		
+		OperacaoEnum operacao = OperacaoEnum.C;
+		
+		assertThatThrownBy(() -> operacao.calcular(transacao))
+			.isInstanceOf(RuntimeException.class)
+			.hasMessage("Transacao nao suportada!");
+	}
+	
+	@Test
 	public void testCalculoOperacaoEntreVinteHeTrintaDias() {
-		ICalculoStrategy<Transacao> strategy = new CalculoOperacaoC();
-		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(30), origem, destino);
-		Double taxa = strategy.calcular(transacao);
+		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(25), origem, destino);
+		
+		OperacaoEnum operacao = OperacaoEnum.C;
+		Double taxa = operacao.calcular(transacao);
+		
 		assertThat(taxa).isEqualTo(69.0d);
 	}
 	
 	@Test
+	public void testCalculoOperacaoEntreVinteHeTrintaDiasComOperacaoNaoSuportada() {
+		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(2), origem, destino);
+		
+		OperacaoEnum operacao = OperacaoEnum.C;
+		
+		assertThatThrownBy(() -> operacao.calcular(transacao))
+			.isInstanceOf(RuntimeException.class)
+			.hasMessage("Transacao nao suportada!");
+	}
+	
+	@Test
 	public void testCalculoOperacaoEntreTrintaHeQuarentaDias() {
-		ICalculoStrategy<Transacao> strategy = new CalculoOperacaoC();
-		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(39), origem, destino);
-		Double taxa = strategy.calcular(transacao);
+		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(35), origem, destino);
+		
+		OperacaoEnum operacao = OperacaoEnum.C;
+		Double taxa = operacao.calcular(transacao);
+		
 		assertThat(taxa).isEqualTo(47.0d);
 	}
 	
 	@Test
+	public void testCalculoOperacaoEntreTrintaHeQuarentaDiasComOperacaoNaoSuportada() {
+		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(5), origem, destino);
+		
+		OperacaoEnum operacao = OperacaoEnum.C;
+		
+		assertThatThrownBy(() -> operacao.calcular(transacao))
+			.isInstanceOf(RuntimeException.class)
+			.hasMessage("Transacao nao suportada!");
+	}
+	
+	@Test
 	public void testCalculoOperacaoMaiorQueQuarentaDias() {
-		ICalculoStrategy<Transacao> strategy = new CalculoOperacaoC();
-		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(41), origem, destino);
-		Double taxa = strategy.calcular(transacao);
+		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(45), origem, destino);
+		
+		OperacaoEnum operacao = OperacaoEnum.C;
+		Double taxa = operacao.calcular(transacao);
+		
 		assertThat(taxa).isEqualTo(17.0d);
 	}
 	
 	@Test
-	public void testCalculoOperacaoComExcecao() {
-		ICalculoStrategy<Transacao> strategy = new CalculoOperacaoC();
+	public void testCalculoOperacaoMaiorQueQuarentaDiasComOperacaoNaoSuportada() {
 		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now(), origem, destino);
 		
-		assertThatThrownBy(() -> strategy.calcular(transacao))
-				.isInstanceOf(RuntimeException.class)
-				.hasMessage("Nao achou operacao de calculo para essa transacao!");
+		OperacaoEnum operacao = OperacaoEnum.C;
+		
+		assertThatThrownBy(() -> operacao.calcular(transacao))
+			.isInstanceOf(RuntimeException.class)
+			.hasMessage("Transacao nao suportada!");
 	}
 	
 }

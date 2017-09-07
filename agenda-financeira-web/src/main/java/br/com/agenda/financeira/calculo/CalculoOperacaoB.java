@@ -6,7 +6,10 @@ public class CalculoOperacaoB implements ICalculoStrategy<Transacao> {
 
 	@Override
 	public Double calcular(Transacao transacao) {
-		return 12d;
+		if (transacao.getAgendamento().isBefore(transacao.getData().plusDays(11))) {
+			return 12d;
+		}
+		throw new RuntimeException("Transacao nao suportada!");
 	}
 
 }
