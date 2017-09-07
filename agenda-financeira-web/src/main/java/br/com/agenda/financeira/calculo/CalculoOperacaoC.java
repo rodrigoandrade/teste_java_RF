@@ -47,7 +47,8 @@ public class CalculoOperacaoC implements ICalculoStrategy<Transacao> {
 	}
 	
 	private boolean isAgendamentoEntreTrintaHeQuarentaDias(Transacao transacao) {
-		return transacao.getAgendamento().isAfter(transacao.getData().plusDays(10));
+		return transacao.getAgendamento().isAfter(transacao.getData().plusDays(30))
+				&& transacao.getAgendamento().isBefore(transacao.getData().plusDays(41));
 	}
 	
 	private boolean isAgendamentoComMaisDeQuarentaDias(Transacao transacao) {

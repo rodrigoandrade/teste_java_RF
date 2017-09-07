@@ -1,4 +1,4 @@
-package br.com.agenda.financeira.operacao;
+package br.com.agenda.financeira.calculo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 import static org.assertj.core.api.Assertions.*;
@@ -38,6 +39,8 @@ public class CalculoTest {
 		
 		double taxa = strategy.calcular(transacao);
 		assertThat(taxa).isEqualTo(33.0d);
+		
+		verify(strategy).calcular(transacao);
 	}
 	
 	@Test
@@ -47,6 +50,8 @@ public class CalculoTest {
 		
 		double taxa = strategy.calcular(transacao);
 		assertThat(taxa).isEqualTo(12.0d);
+		
+		verify(strategy).calcular(transacao);
 	}
 	
 	@Test
@@ -56,6 +61,8 @@ public class CalculoTest {
 		
 		double taxa = strategy.calcular(transacao);
 		assertThat(taxa).isEqualTo(82.0d);
+		
+		verify(strategy).calcular(transacao);
 	}
 	
 	@Test
@@ -65,6 +72,8 @@ public class CalculoTest {
 		
 		double taxa = strategy.calcular(transacao);
 		assertThat(taxa).isEqualTo(69.0d);
+		
+		verify(strategy).calcular(transacao);
 	}
 	
 	@Test
@@ -74,6 +83,8 @@ public class CalculoTest {
 		
 		double taxa = strategy.calcular(transacao);
 		assertThat(taxa).isEqualTo(47.0d);
+		
+		verify(strategy).calcular(transacao);
 	}
 	
 	@Test
@@ -83,6 +94,8 @@ public class CalculoTest {
 		
 		double taxa = strategy.calcular(transacao);
 		assertThat(taxa).isEqualTo(17.0d);
+		
+		verify(strategy).calcular(transacao);
 	}
 	
 }
