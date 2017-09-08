@@ -3,8 +3,12 @@ package br.com.agenda.financeira.modelo;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.springframework.data.annotation.Id;
+
 public class Transacao {
 
+	@Id
+	private String id;
 	private BigDecimal valor;
 	private LocalDate data;
 	private LocalDate agendamento;
@@ -21,6 +25,10 @@ public class Transacao {
 		this.destino = destino;
 	}
 
+	public String getId() {
+		return id;
+	}
+	
 	public BigDecimal getValor() {
 		return valor;
 	}
@@ -41,4 +49,10 @@ public class Transacao {
 		return destino;
 	}
 
+	@Override
+	public String toString() {
+		return "Transacao [id=" + id + ", valor=" + valor + ", data=" + data + ", agendamento=" + agendamento
+				+ ", origem=" + origem + ", destino=" + destino + "]";
+	}
+	
 }

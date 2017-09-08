@@ -38,5 +38,11 @@ public class Conta {
 	public Agencia getAgencia() {
 		return agencia;
 	}
+	
+	@Override
+	public String toString() {
+		return "Conta [id=" + id + ", numero=" + numero + ", digito=" + digito + ", titular=" + titular + ", agencia="
+				+ agencia + "]";
+	}
 
 }
