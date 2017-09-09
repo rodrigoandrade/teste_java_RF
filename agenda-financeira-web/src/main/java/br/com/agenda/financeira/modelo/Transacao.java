@@ -14,6 +14,7 @@ public class Transacao {
 	private LocalDate agendamento;
 	private Conta origem;
 	private Conta destino;
+	private Double taxa;
 	
 	public Transacao(BigDecimal valor, LocalDate data, LocalDate agendamento, Conta origem,
 			Conta destino) {
@@ -49,10 +50,17 @@ public class Transacao {
 		return destino;
 	}
 
+	public void setTaxa(Double taxa) {
+		this.taxa = taxa;
+	}
+	
+	public Double getTaxa() {
+		return taxa;
+	}
+
 	@Override
 	public String toString() {
 		return "Transacao [id=" + id + ", valor=" + valor + ", data=" + data + ", agendamento=" + agendamento
 				+ ", origem=" + origem + ", destino=" + destino + "]";
 	}
-	
 }
