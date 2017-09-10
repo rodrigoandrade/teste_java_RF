@@ -54,7 +54,7 @@ public class TransacaoServiceTest {
 		
 		when(repository.save(transacao)).thenReturn(transacao);
 		
-		service.salva(transacao, OperacaoEnum.A);
+		service.salva(OperacaoEnum.A.name(), transacao);
 		
 		verify(repository).save(transacao);
 	}
@@ -63,13 +63,13 @@ public class TransacaoServiceTest {
 	public void testSalvaComTransacaoNaoSuportada() {
 		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now().plusDays(5), contaOrigem, contaDestino);
 		
-		assertThatThrownBy(() -> service.salva(transacao, OperacaoEnum.A))
+		assertThatThrownBy(() -> service.salva(OperacaoEnum.A.name(), transacao))
 			.isInstanceOf(RuntimeException.class)
 			.hasMessage("Transacao nao suportada!");
 	}
 	
 	@Test
-	public void testBuscaPorData() {
+	public void testBuscaPorData() throws Exception {
 		LocalDate hoje = LocalDate.now();
 		when(repository.findByData(Mockito.eq(hoje))).thenReturn(Arrays.asList(transacao));
 		
@@ -83,7 +83,7 @@ public class TransacaoServiceTest {
 	}
 	
 	@Test
-	public void testBuscaPorDataDeAgendamento() {
+	public void testBuscaPorDataDeAgendamento() throws Exception {
 		LocalDate hojeMaisCincoDias = LocalDate.now().plusDays(5);
 		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), hojeMaisCincoDias, contaOrigem, contaDestino);
 		
@@ -99,7 +99,7 @@ public class TransacaoServiceTest {
 	}
 	
 	@Test
-	public void testBuscaPorDataHeDataDeAgendamento() {
+	public void testBuscaPorDataHeDataDeAgendamento() throws Exception {
 		LocalDate hoje = LocalDate.now();
 		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), hoje, hoje, contaOrigem, contaDestino);
 		
