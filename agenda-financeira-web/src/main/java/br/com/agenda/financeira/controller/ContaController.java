@@ -1,6 +1,7 @@
 package br.com.agenda.financeira.controller;
 
 import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,35 +13,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.agenda.financeira.modelo.Agencia;
-import br.com.agenda.financeira.service.AgenciaService;
+import br.com.agenda.financeira.modelo.Conta;
+import br.com.agenda.financeira.service.ContaService;
 
 @RestController
-@RequestMapping("/agencias")
-public class AgenciaController {
-
+@RequestMapping("/contas")
+public class ContaController {
+	
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
-	private AgenciaService service;
+	private ContaService service;
 
 	@GetMapping
-	public List<Agencia> getAgencias(@RequestParam(value = "nome", required = false) String nome,
+	public List<Conta> getContas(@RequestParam(value = "titular", required = false) String titular,
 			@RequestParam(value = "numero", required = false) String numero) throws Exception {
 		
-		log.info("Busca agencias com sucesso:..");
-		return service.listaAgenciasPor(numero, nome);
+		log.info("Busca contas com sucesso:..");
+		return service.listaContasPor(numero, titular);
 	}
 	
 	@PostMapping
-	public void salvar(@RequestBody Agencia agencia) {
-		service.salva(agencia);
-		log.info("Salvo agencia com sucesso:.." + agencia);
+	public void salvar(@RequestBody Conta conta) {
+		service.salva(conta);
+		log.info("Salvo conta com sucesso:.." + conta);
 	}
 	
 	@DeleteMapping
-	public void delete(@RequestBody Agencia agencia) {
-		service.deleta(service.buscaPorNumero(agencia.getNumero()));
-		log.info("Deletado agencia com sucesso:.." + agencia);
+	public void delete(@RequestBody Conta conta) {
+		service.deleta(service.buscaContaPorNumero(conta.getNumero()));
+		log.info("Deletado conta com sucesso:.." + conta);
 	}
+
 }

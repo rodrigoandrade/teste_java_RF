@@ -42,7 +42,7 @@ public class AgenciaServiceTest {
     public void testBuscaPorNumero() {
     	when(repository.findByNumero(Mockito.eq(agencia.getNumero()))).thenReturn(agencia);
     	
-    	Agencia agenciaTest = service.findByNumero(agencia.getNumero());
+    	Agencia agenciaTest = service.buscaPorNumero(agencia.getNumero());
     	assertThat(agenciaTest.getNumero()).isEqualTo(agencia.getNumero());
     	assertThat(agenciaTest.getDigito()).isEqualTo(agencia.getDigito());
     	assertThat(agenciaTest.getNome()).isEqualTo(agencia.getNome());
@@ -54,7 +54,7 @@ public class AgenciaServiceTest {
     public void testBuscaPorNome() {
     	when(repository.findByNome(Mockito.eq(agencia.getNome()))).thenReturn(agencia);
     	
-    	Agencia agenciaTest = service.findByNome(agencia.getNome());
+    	Agencia agenciaTest = service.buscaPorNome(agencia.getNome());
     	assertThat(agenciaTest.getNumero()).isEqualTo(agencia.getNumero());
     	assertThat(agenciaTest.getDigito()).isEqualTo(agencia.getDigito());
     	assertThat(agenciaTest.getNome()).isEqualTo(agencia.getNome());

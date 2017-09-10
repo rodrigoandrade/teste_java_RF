@@ -23,86 +23,89 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.agenda.financeira.modelo.Agencia;
-import br.com.agenda.financeira.service.AgenciaService;
+import br.com.agenda.financeira.modelo.Conta;
+import br.com.agenda.financeira.service.ContaService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-public class AgenciaControllerTestIT {
-	
+public class ContaControllerTestIT {
+
 	@Autowired
     private TestRestTemplate restTemplate;
 	
 	@Autowired
-	private AgenciaService agenciaService;
+	private ContaService contaService;
 	
 	@LocalServerPort
 	private int port;
 	
 	HttpHeaders headers = new HttpHeaders();
 
-	private List<Agencia> agencias;
+	private List<Conta> contas;
 	
 	@Before
 	public void inicializa() {
-		agencias = new ArrayList<>();
-		agencias.add(new Agencia("101010", "2", "Figueiras Santo Andre"));
-		agencias.add(new Agencia("31999", "1", "Goias Sao Caetano"));
-		agencias.add(new Agencia("101011", "2", "Dom Pedro II"));
+		Agencia goias = new Agencia("31999", "1", "Goias Sao Caetano");
+		Agencia domPedro = new Agencia("101011", "2", "Dom Pedro II");
+		contas = new ArrayList<>();
+		contas.add(new Conta("404", "2", "Maria", goias));
+		contas.add(new Conta("319", "1", "Jose", domPedro));
+		contas.add(new Conta("637", "2", "Manoel", goias));
 		
-		agencias.forEach(agenciaService::salva);
+		contas.forEach(contaService::salva);
 	}
 	
 	@After
 	public void finaliza() {
-		agencias.forEach(agencia -> {
-			Agencia agenciaPorNumero = agenciaService.buscaPorNumero(agencia.getNumero());
-			if (Objects.nonNull(agenciaPorNumero)) {
-				agenciaService.deleta(agenciaPorNumero);
+		contas.forEach(conta -> {
+			Conta contaPorNumero = contaService.buscaContaPorNumero(conta.getNumero());
+			if (Objects.nonNull(contaPorNumero)) {
+				contaService.deleta(contaPorNumero);
 			}
 		});
 	}
 	
 	@Test
-    public void testGetTodasAgencias() {
-		agencias.forEach(agencia -> {
-			HttpEntity<Agencia> entity = new HttpEntity<Agencia>(agencia, headers);
+    public void testGetTodasContas() {
+		contas.forEach(conta -> {
+			HttpEntity<Conta> entity = new HttpEntity<Conta>(conta, headers);
 			
-			ResponseEntity<String> response = restTemplate.exchange(criaURL("/agencias"), HttpMethod.GET, entity, String.class);
+			ResponseEntity<String> response = restTemplate.exchange(criaURL("/contas"), HttpMethod.GET, entity, String.class);
 			assertThat(response.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
 		});
     }
 	
 	@Test
-	public void testGetAgenciaPorNumero() {
-		agencias.forEach(agencia -> {
-			HttpEntity<Agencia> entity = new HttpEntity<Agencia>(agencia, headers);
+	public void testGetContasPorNumero() {
+		contas.forEach(conta -> {
+			HttpEntity<Conta> entity = new HttpEntity<Conta>(conta, headers);
 			
 			ResponseEntity<String> response = restTemplate.exchange(
-					criaURL("/agencias?numero="+agencia.getNumero()), HttpMethod.GET, entity, String.class);
+					criaURL("/contas?numero="+conta.getNumero()), HttpMethod.GET, entity, String.class);
 			
 			assertThat(response.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
 		});
 	}
 
 	@Test
-	public void testGetAgenciaPorNome() {
-		agencias.forEach(agencia -> {
-			HttpEntity<Agencia> entity = new HttpEntity<Agencia>(agencia, headers);
+	public void testGetContaPorTitular() {
+		contas.forEach(conta -> {
+			HttpEntity<Conta> entity = new HttpEntity<Conta>(conta, headers);
 			
 			ResponseEntity<String> response = restTemplate.exchange(
-					criaURL("/agencias?nome="+agencia.getNome()), HttpMethod.GET, entity, String.class);
+					criaURL("/contas?titular="+conta.getTitular()), HttpMethod.GET, entity, String.class);
 			
 			assertThat(response.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
 		});
 	}
 
 	@Test
-	public void testGetAgenciaPorNomeHeNumero() {
-		agencias.forEach(agencia -> {
-			HttpEntity<Agencia> entity = new HttpEntity<Agencia>(agencia, headers);
+	public void testGetContaPorTitularHeNumero() {
+		contas.forEach(conta -> {
+			HttpEntity<Conta> entity = new HttpEntity<Conta>(conta, headers);
 			
 			ResponseEntity<String> response = restTemplate.exchange(
-					criaURL("/agencias?nome="+agencia.getNome()+"&numero="+agencia.getNumero()), 
+					criaURL("/contas?titular="+conta.getTitular()+"&numero="+conta.getNumero()), 
 					HttpMethod.GET, entity, String.class);
 			
 			assertThat(response.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
@@ -110,23 +113,24 @@ public class AgenciaControllerTestIT {
 	}
 	
 	@Test
-	public void testGetAgenciaSemConteudo() {
-		Agencia agencia = new Agencia("2827272727", "9", "TESTE");
-		HttpEntity<Agencia> entity = new HttpEntity<Agencia>(agencia, headers);
+	public void testGetContaSemConteudo() {
+		Agencia agencia = new Agencia("4040", "8", "AGENCIA TESTE");
+		Conta conta = new Conta("555555566", "9", "TESTE CONTA", agencia);
+		HttpEntity<Conta> entity = new HttpEntity<Conta>(conta, headers);
 			
 		ResponseEntity<String> response = restTemplate.exchange(
-			criaURL("/agencias?numero="+agencia.getNumero()), HttpMethod.GET, entity, String.class);
+			criaURL("/contas?numero="+conta.getNumero()), HttpMethod.GET, entity, String.class);
 			
 		assertThat(response.getStatusCode().value()).isEqualTo(HttpStatus.NO_CONTENT.value());
 	}
 	
 	@Test
 	public void testSalvar() {
-		agencias.forEach(agencia -> {
-			HttpEntity<Agencia> entity = new HttpEntity<Agencia>(agencia, headers);
+		contas.forEach(conta -> {
+			HttpEntity<Conta> entity = new HttpEntity<Conta>(conta, headers);
 			
 			ResponseEntity<String> response = restTemplate.exchange(
-					criaURL("/agencias"),
+					criaURL("/contas"),
 					HttpMethod.POST, entity, String.class);
 			
 			assertThat(response.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
@@ -135,11 +139,11 @@ public class AgenciaControllerTestIT {
 	
 	@Test
 	public void testDeletar() {
-		agencias.forEach(agencia -> {
-			HttpEntity<Agencia> entity = new HttpEntity<Agencia>(agencia, headers);
+		contas.forEach(conta -> {
+			HttpEntity<Conta> entity = new HttpEntity<Conta>(conta, headers);
 			
 			ResponseEntity<String> response = restTemplate.exchange(
-					criaURL("/agencias"),
+					criaURL("/contas"),
 					HttpMethod.DELETE, entity, String.class);
 			
 			assertThat(response.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
