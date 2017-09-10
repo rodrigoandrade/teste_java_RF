@@ -27,11 +27,11 @@ public class AgenciaService {
 		repository.delete(agencia);
 	}
 	
-	public Agencia findByNumero(String numero) {
+	public Agencia buscaPorNumero(String numero) {
 		return repository.findByNumero(numero);
 	}
 
-	public Agencia findByNome(String nome) {
+	public Agencia buscaPorNome(String nome) {
 		return repository.findByNome(nome);
 	}
 	
@@ -42,16 +42,16 @@ public class AgenciaService {
 	public List<Agencia> listaAgenciasPor(String numero, String nome) throws Exception {
 		Set<Agencia> agencias = new HashSet<>();
 		if (Objects.nonNull(nome)) {
-			Agencia agencia = findByNome(nome);
+			Agencia agencia = buscaPorNome(nome);
 			if (Objects.nonNull(agencia)) {
-				agencias.add(findByNome(nome));
+				agencias.add(buscaPorNome(nome));
 			}
 		}
 
 		if (Objects.nonNull(numero)) {
-			Agencia agencia = findByNumero(numero);
+			Agencia agencia = buscaPorNumero(numero);
 			if (Objects.nonNull(agencia)) {
-				agencias.add(findByNumero(numero));
+				agencias.add(buscaPorNumero(numero));
 			}
 		}
 
