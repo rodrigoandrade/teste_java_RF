@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.agenda.financeira.modelo.Transacao;
 import br.com.agenda.financeira.service.TransacaoService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 
+@Api(value="agenda financeira")
 @RestController
 @RequestMapping("/transacoes")
 public class TransacaoController {
@@ -26,6 +29,7 @@ private final Logger log = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	private TransacaoService service;
 
+	@ApiOperation(value = "Lista de transacoes", response = List.class)
 	@GetMapping
 	public List<Transacao> getTransacoes(
 			@RequestParam(value = "data", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data,
@@ -36,6 +40,7 @@ private final Logger log = LoggerFactory.getLogger(this.getClass());
 		return service.listaTransacoesPor(data, dataAgendamento);
 	}
 	
+	@ApiOperation(value = "Salva transacao", response = List.class)
 	@PostMapping
 	public void salvar(@RequestParam("tipoOperacao") String tipoOperacao,  @RequestBody Transacao transacao) {
 		service.salva(tipoOperacao, transacao);
