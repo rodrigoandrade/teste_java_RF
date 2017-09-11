@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.junit.After;
 import org.junit.Before;
@@ -124,14 +125,17 @@ public class TransacaoControllerTestIT {
 	}
 	
 	@Test
-	public void testSalvar() {
-		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now(), LocalDate.now(), origem, destino);
+	public void testSalvar() throws Exception {
+		Transacao transacao = new Transacao(BigDecimal.valueOf(1000), LocalDate.now().plusDays(90), LocalDate.now().plusDays(90), origem, destino);
 		HttpEntity<Transacao> entity = new HttpEntity<Transacao>(transacao, headers);
 			
 		ResponseEntity<String> response = restTemplate.exchange(
 				criaURL("/transacoes?tipoOperacao="+OperacaoEnum.A.name()),
 				HttpMethod.POST, entity, String.class);
-			
+		
+		Transacao transacaoSalva = transacaoService.buscaPorData(LocalDate.now().plusDays(90)).get(0);
+		transacoes.add(transacaoSalva);
+		
 		assertThat(response.getStatusCode().value()).isEqualTo(HttpStatus.OK.value());
 	}
 	
